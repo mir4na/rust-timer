@@ -1,0 +1,5 @@
+## 1.2. Understanding how it works.
+
+![alt text](image.png)
+
+Output tersebut menampilkan urutan eksekusi program asynchronous yang menggunakan executor kustom untuk menjalankan task asynchronous di Rust. Pertama, program mencetak "Hafizh's Komputer: hey hey" secara langsung dari fungsi main, sebelum executor mulai menjalankan task asynchronous. Kemudian, spawner.spawn(...) menambahkan sebuah task asynchronous ke queue, di mana task tersebut mencetak "Hafizh's Komputer: howdy!", menunggu selama 2 detik dengan TimerFuture::new(Duration::new(2, 0)).await, lalu mencetak "Hafizh's Komputer: done!". Executor kemudian memproses task tersebut satu per satu dari queue. Karena TimerFuture belum selesai saat pertama dipoll, task disimpan kembali dan dilanjutkan setelah 2 detik. Inilah sebabnya urutan output adalah: "hey hey" (langsung dieksekusi), lalu "howdy!", dan terakhir "done!" setelah delay.
